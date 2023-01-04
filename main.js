@@ -1,4 +1,7 @@
 const postsList = document.querySelector('.posts-list');
+const addPostFrom = document.querySelector('.add-post-form');
+const titleValue = document.getElementById('title-value');
+const descriptionValue = document.getElementById('description-value');
 let output = '';
 
 const renderPosts = (posts) => {
@@ -28,16 +31,27 @@ fetch(api)
 
 
 
+// Create - Insert new post - Method: POST
+addPostFrom.addEventListener('submit', (e) => {
+  e.preventDefault();
+  fetch(api, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: titleValue.value,
+      description: descriptionValue.value
+
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const dataArr = [];
+    dataArr.push(data);
+    renderPosts(dataArr);
+  })
+})
 
 
 
-
-
-
-// fetch('http://127.0.0.1:3000/posts')
-// .then(result => {
-//   return result.json();
-// })
-// .then(data => {
-//   console.log(data)
-// })
