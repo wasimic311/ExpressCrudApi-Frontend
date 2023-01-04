@@ -8,12 +8,12 @@ const renderPosts = (posts) => {
   posts.forEach(post => {
     output += `
       <div class="card mt-4 col-md-6 bg-light">
-        <div class="card-body">
+        <div class="card-body" data-id=${post._id}>
           <h5 class="card-title">${post.title}</h5>
           <h6 class="card-subtitle mb-2 text-muted">${post.date}</h6>
           <p class="card-text">${post.description}</p>
-          <a href="#" class="card-link">Edit</a>
-          <a href="#" class="card-link">Delete</a>
+          <a href="#" class="card-link" id="edit-post">Edit</a>
+          <a href="#" class="card-link" id="delete-post">Delete</a>
         </div>
       </div>
     `;
@@ -52,6 +52,26 @@ addPostFrom.addEventListener('submit', (e) => {
     renderPosts(dataArr);
   })
 })
+
+
+
+postsList.addEventListener('click', (e) => {
+  e.preventDefault();
+  let delButtonIsPressed = e.target.id == 'delete-post';
+  let editButtonIsPressed = e.target.id == 'edit-post';
+
+  let id = e.target.parentElement.dataset.id;
+// Delete a post - Method: DELETE
+  if(delButtonIsPressed){
+    fetch(`${api}/${id}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(() => location.reload())
+  }
+
+
+});
 
 
 
